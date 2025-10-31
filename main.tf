@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
  
-resource "aws_vpc" "main_vpc" {
+resource "aws_vpc2" "main_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -50,12 +50,18 @@ resource "aws_route_table_association" "public_assoc" {
 }
  
 resource "aws_s3_bucket" "terraform_bucket" {
-  bucket        = "138252-2-terraform-demo-bucket-assignment2"
+  bucket        = "138252-2-terraform-demo-bucket-${random_id.bucket_id.hex}"
   force_destroy = true
- 
+
   tags = {
     Name        = "138252-2-Terraform-S3-bucket"
     Environment = "Dev"
   }
+}
+
+resource "random_id" "bucket_id" {
+  byte_length = 4
+}
+
 }
  
